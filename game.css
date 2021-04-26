@@ -1,0 +1,48 @@
+:root {
+  --grid-cols: 1;
+  --grid-rows: 1;
+}
+
+#container {
+  display: grid;
+  grid-gap: 1em;
+  grid-template-rows: repeat(var(--grid-rows), 1fr);
+  grid-template-columns: repeat(var(--grid-cols), 1fr);
+  width: 500px;
+  height: 500px;
+  border: 1px solid #ddd;
+  padding: 1em;
+  background: #f1f1f1;
+}
+
+#undo-div {
+  padding-top: 1em;
+}
+
+.grid-item {
+  padding: 1em;
+  border: 1px solid #ddd;
+}
+
+.selected {
+  border: 4px solid #ffe086;
+}
+
+.selected-for-move {
+  border: 4px solid #89ff00;
+}
+
+#level {
+  font-size: larger;
+  padding-top:10px;
+}
+
+#you-did-it {
+  font-size: larger;
+  padding-top:10px;
+}
+
+#game-over {
+  font-size: larger;
+  color: red;
+}
