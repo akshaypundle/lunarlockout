@@ -1,0 +1,37 @@
+{
+  "name": "lunarlockout",
+  "version": "0.0.1",
+  "description": "classic lunar lockout game",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akshaypundle/lunarlockout.git"
+  },
+  "keywords": [
+    "lunar",
+    "lockout",
+    "game"
+  ],
+  "author": "akshay pundle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akshaypundle/lunarlockout/issues"
+  },
+  "homepage": "https://github.com/akshaypundle/lunarlockout#readme",
+  "devDependencies": {
+    "add": "^2.0.6",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.27.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-require": "0.0.1",
+    "or": "^0.2.0",
+    "prettier": "^2.3.0",
+    "yarn": "^1.22.10"
+  },
+  "dependencies": {}
+}

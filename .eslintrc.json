@@ -1,0 +1,17 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["prettier"],
+  "rules": {
+    "max-len": ["error", { "code": 100 }],
+     "prettier/prettier": [ "error",
+      {
+        "endOfLine": "lf",
+        "semi": false,
+        "singleQuote": false,
+        "tabWidth": 2,
+        "trailingComma": "es5"
+      }
+    ]
+  },
+  "extends": ["google", "prettier"]
+}
