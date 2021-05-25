@@ -1,5 +1,4 @@
 ;(function () {
-
   const board = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
@@ -7,7 +6,6 @@
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
   ]
-
   let selected = [0, 0]
   let shouldMoveColor = false
   let gameOver = false
@@ -15,14 +13,15 @@
   let level = 0
 
   const colors = ["white", "orange", "green", "yellow", "red", "purple", "blue"]
-
-	// boards gives the position of each of the above colors on the board.
-	// for example, 
+  
+  // boards gives the position of each of the above colors on the board.
+  // the entries start with orange, while is in the colors array for convenience.
+  // for example,
   //  [[0, 4], [1, 2], [3, 3], [4, 4], [2, 1]], means:
-  //  	white is in position [0, 4]
-	//  	orange is in position [1, 2]
-	// and so on.
-	//
+  //  	orange is in position [0, 4]
+  //  	green is in position [1, 2]
+  // and so on.
+  //
   // prettier-ignore
   const boards = [
     [[0, 4], [1, 2], [3, 3], [4, 4], [2, 1]],
