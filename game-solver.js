@@ -60,27 +60,67 @@
     [[0, 0], [0, 2], [2, 0], [4, 4], [0, 4], [4, 0]],
     [[0, 0], [0, 2], [3, 4], [4, 1], [0, 4]],
   ];
+  const steps = [5,7,9,10,11,14]
 
 
   function startSolve() {
-    let steps = [5,7,9,11,14]
-    for(let i=1;i<40;i++) {
+    let totaltime = 0;
+    for(let i=1;i<38;i++) {
+      var t0 = performance.now()
+
+
       board = boards[i];
-      solution = null;
-      for(const step of steps) {
-        solution =  solve(board, step);
-        if(solution != null) {
-          break;
-        }
-      }
+      solution = solveIterativeDescent(board);
 
       if(solution != null) {
-        console.log("solved board ", i, solution);
+        var t1 = performance.now()
+        console.log("solved board ", i, solution, " milliseconds: ", t1 - t0);
+        totaltime = totaltime + (t1-t0);
       } else {
         console.log("could not solve board ", i);
       }
 
     }
+
+    console.log(totaltime);
+    console.log(generateRandomBoard(7));
+  }
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  function generateRandomBoard(difficulty) {
+    if(difficulty < 1 ) difficulty = 1;
+    if(difficulty > 12) difficulty = 12;
+    while(true) {
+      board = generateRandomBoard();
+      if(solve(board, difficulty)) return board;
+    }
+  }
+
+  function generateRandomBoard() {
+    vals = new Set();
+    while(vals.size < colors.length) {
+      vals.add(getRandomInt(25));
+    }
+    ret = [];
+    for(val of vals.values()) {
+      ret.push([Math.floor(val/5), val % 5]);
+    }
+    return ret;
+
+  }
+
+  function solveIterativeDescent(board) {
+    solution = null;
+    for(const step of steps) {
+      solution =  solve(board, step);
+      if(solution != null) {
+        return solution;
+      }
+    }
+    return null;
   }
 
   function solve(board, steps) {
@@ -88,7 +128,7 @@
     if(steps > 0) {
       for(let color = 0; color<colors.length; color++) {
         if(board[color] == null) continue;
-        for(const direction in directions) {
+        for(const direction in directions) {// getMoves(board, color)) {
           if(canMove(board, color, direction)) {
             boardCopy=JSON.parse(JSON.stringify(board));
             move(boardCopy, color, direction);
@@ -181,36 +221,62 @@
     }
   }
 
+  function getMoves(board, color) {
+    moves = [];
+    position = board[color];
+    if(position == null) {
+      return [];
+    }
+    let addup=true, addleft=true, addright=true, adddown=true;
+    for(let i=0;i<colors.length;i++) {
+      if(board[i] == null) continue;
+      if(addup && i != color && board[i][1] == position[1] && board[i][0] < position[0] - 1) {moves.push(directions.UP); addup=false;}
+      if(adddown && i != color && board[i][1] == position[1] && board[i][0] > position[0] + 1) {moves.push(directions.DOWN);adddown=false;}
+      if(addleft && i != color && board[i][0] == position[0] && board[i][1] < position[1] - 1) {moves.push(directions.LEFT); addleft=false;}
+      if(addright && i != color && board[i][0] == position[0] && board[i][1] > position[1] + 1) {moves.push(directions.RIGHT);addright=false;}
+    }
+
+    return moves;
+  }
+
 
   function canMove(board, color, direction) {
     position = board[color];
     if(position == null) {
       console.log("position is null 0");
     }
+
+    // some optimizations, we can immediately disregard these moves
+    if(position[0] <=1 && direction == directions.UP) return false;
+    if(position[0] >=3 && direction == directions.DOWN) return false;
+    if(position[1] <=1 && direction == directions.LEFT) return false;
+    if(position[1] >=3 && direction == directions.RIGHT) return false;
+    for(let i=0;i<colors.length;i++) {
+      if(board[i] == null) continue;
+      if(i != color && canBlockWithAMove(board, color, i, direction)) return true;
+    }
+    return false;
+  }
+
+  // does the blocker block the mover in the direction?
+  // note that this will also check if there is actually a move. if the 
+  // blocker is right next to the mover, and it blocks it, but there
+  // is no move, then the return value will be false.
+  function canBlockWithAMove(board, moverColor, blockerColor, direction) {
+    position = board[moverColor];
+
     switch(direction) {
       case directions.UP:
-        for(let i=0;i<colors.length;i++) {
-          if(board[i] == null) continue;
-          if(i != color && board[i][1] == position[1] && board[i][0] < position[0] - 1) return true;
-        }
+        if(board[blockerColor][1] == position[1] && board[blockerColor][0] < position[0] - 1) return true;
         break;
       case directions.DOWN:
-        for(let i=0;i<colors.length;i++) {
-          if(board[i] == null) continue;
-          if(i != color && board[i][1] == position[1] && board[i][0] > position[0] + 1) return true;
-        }
+        if(board[blockerColor][1] == position[1] && board[blockerColor][0] > position[0] + 1) return true;
         break;
       case directions.LEFT:
-        for(let i=0;i<colors.length;i++) {
-          if(board[i] == null) continue;
-          if(i != color && board[i][0] == position[0] && board[i][1] < position[1] - 1) return true;
-        }
+        if(board[blockerColor][0] == position[0] && board[blockerColor][1] < position[1] - 1) return true;
         break;
       case directions.RIGHT:
-        for(let i=0;i<colors.length;i++) {
-          if(board[i] == null) continue;
-          if(i != color && board[i][0] == position[0] && board[i][1] > position[1] + 1) return true;
-        }
+        if(board[blockerColor][0] == position[0] && board[blockerColor][1] > position[1] + 1) return true;
         break;
     }
     return false;
