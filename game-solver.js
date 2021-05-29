@@ -60,11 +60,13 @@
     [[0, 0], [0, 2], [2, 0], [4, 4], [0, 4], [4, 0]],
     [[0, 0], [0, 2], [3, 4], [4, 1], [0, 4]],
   ];
-  const steps = [5,7,9,10,11,14]
+  const steps = [5,7,9,10,11]
 
 
   function startSolve() {
     let totaltime = 0;
+
+    /*
     for(let i=1;i<38;i++) {
       var t0 = performance.now()
 
@@ -80,22 +82,31 @@
         console.log("could not solve board ", i);
       }
 
-    }
+    }*/
 
     console.log(totaltime);
-    console.log(generateRandomBoard(7));
+    console.log(solveIterativeDescent(generateRandomBoardWithDifficulty(10)));
   }
 
   function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
 
-  function generateRandomBoard(difficulty) {
+  function generateRandomBoardWithDifficulty(difficulty) {
     if(difficulty < 1 ) difficulty = 1;
     if(difficulty > 12) difficulty = 12;
     while(true) {
+        console.log("starting generation");
       board = generateRandomBoard();
-      if(solve(board, difficulty)) return board;
+        console.log("done generating, starting solving", board);
+      solution = solveIterativeDescent(board);
+        console.log("done solving ", solution);
+
+      if(solution != null && solution.length >= difficulty*0.66) {
+        return board;
+      } else if(solution != null) {
+        console.log(solution.length);
+      }
     }
   }
 

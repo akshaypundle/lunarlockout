@@ -13,7 +13,7 @@
   let level = 0
 
   const colors = ["white", "orange", "green", "yellow", "red", "purple", "blue"]
-  
+
   // boards gives the position of each of the above colors on the board.
   // the entries start with orange, while is in the colors array for convenience.
   // for example,
