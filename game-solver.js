@@ -1,14 +1,14 @@
+class LunarLockoutSolver {
+
+
+}
+
+
 ;(function () {
 
-  let level = 0
 
-  const colors = ["orange", "green", "yellow", "red", "purple", "blue"]
-  const directions = {
-    UP : "UP",
-    DOWN: "DOWN",
-    LEFT: "LEFT",
-    RIGHT: "RIGHT"
-  }
+
+  LunarLockoutSolver.yoman();
   
   // boards gives the position of each of the above colors on the board.
   // for example,
@@ -60,8 +60,14 @@
     [[0, 0], [0, 2], [2, 0], [4, 4], [0, 4], [4, 0]],
     [[0, 0], [0, 2], [3, 4], [4, 1], [0, 4]],
   ];
-  const steps = [5,7,9,10,11]
 
+  const colors = ["orange", "green", "yellow", "red", "purple", "blue"]
+  const directions = {
+    UP : "UP",
+    DOWN: "DOWN",
+    LEFT: "LEFT",
+    RIGHT: "RIGHT"
+  }
 
   function startSolve() {
     let totaltime = 0;
@@ -85,21 +91,23 @@
     }*/
 
     console.log(totaltime);
-    console.log(solveIterativeDescent(generateRandomBoardWithDifficulty(10)));
+
+    steps = [5]
+    console.log(generateRandomBoardWithDifficulty(2, steps));
   }
 
   function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
 
-  function generateRandomBoardWithDifficulty(difficulty) {
+  function generateRandomBoardWithDifficulty(difficulty, steps) {
     if(difficulty < 1 ) difficulty = 1;
     if(difficulty > 12) difficulty = 12;
     while(true) {
         console.log("starting generation");
       board = generateRandomBoard();
         console.log("done generating, starting solving", board);
-      solution = solveIterativeDescent(board);
+      solution = solveIterativeDescent(board, steps);
         console.log("done solving ", solution);
 
       if(solution != null && solution.length >= difficulty*0.66) {
@@ -123,7 +131,7 @@
 
   }
 
-  function solveIterativeDescent(board) {
+  function solveIterativeDescent(board, steps) {
     solution = null;
     for(const step of steps) {
       solution =  solve(board, step);
@@ -302,8 +310,6 @@
   window.onload = function () {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
-    level = urlParams.get("level") || "0"
-    level = Math.min(Math.max(0, parseInt(level) - 1), boards.length - 1)
     startSolve()
   }
 })()

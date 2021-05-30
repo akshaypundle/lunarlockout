@@ -1,3 +1,294 @@
+class LunarLockoutSolver {
+  static randomBoards = [] // each elements is [board, solution]
+  static colors = ["orange", "green", "yellow", "red", "purple", "blue"]
+  static directions = {
+    UP: "UP",
+    DOWN: "DOWN",
+    LEFT: "LEFT",
+    RIGHT: "RIGHT",
+  }
+
+  static getRandomInt(max) {
+    return Math.floor(Math.random() * max)
+  }
+
+  static generateRandomBoardWithDifficulty(difficulty, steps) {
+    for (let i = 0; i < randomBoards.length; i++) {
+      const element = randomBoards[i]
+      if (element[1].length >= difficulty * 0.66) {
+        randomBoards.splice(i, 1)
+        return element[0]
+      }
+    }
+
+    if (difficulty < 1) difficulty = 1
+    if (difficulty > 10) difficulty = 10
+    while (true) {
+      board = generateRandomBoard()
+      solution = solveIterativeDescent(board, steps)
+      if (solution != null && solution.length >= difficulty * 0.66) {
+        return board
+      } else if (solution != null) {
+        randomBoards.add([board, solution])
+      }
+    }
+  }
+
+  static generateRandomBoard() {
+    vals = new Set()
+    while (vals.size < this.colors.length) {
+      vals.add(getRandomInt(25))
+    }
+    ret = []
+    for (val of vals.values()) {
+      ret.push([Math.floor(val / 5), val % 5])
+    }
+    return ret
+  }
+
+  static solveIterativeDescent(board, steps) {
+    let solution = null
+    for (const step of steps) {
+      solution = this.solve(board, step)
+      if (solution != null) {
+        return solution
+      }
+    }
+    return null
+  }
+
+  static solve(board, steps) {
+    if (this.isSolved(board)) return []
+    if (steps > 0) {
+      for (let color = 0; color < this.colors.length; color++) {
+        if (board[color] == null) continue
+        for (const direction in this.directions) {
+          if (this.canMove(board, color, direction)) {
+            const boardCopy = JSON.parse(JSON.stringify(board))
+            this.move(boardCopy, color, direction)
+            if (this.isSolved(boardCopy)) {
+              return [[this.colors[color], direction]]
+            } else {
+              const solution = this.solve(boardCopy, steps - 1)
+              if (solution != null) {
+                solution.push([this.colors[color], direction])
+                return solution
+              }
+            }
+          }
+        }
+      }
+    }
+    return null
+  }
+
+  static move(board, color, direction) {
+    const position = board[color]
+    if (position == null) {
+      console.log("position is null 0")
+    }
+    let found = null
+    switch (direction) {
+      case this.directions.UP:
+        for (let i = 0; i < this.colors.length; i++) {
+          if (board[i] == null) continue
+          if (
+            i != color &&
+            board[i][1] == position[1] &&
+            board[i][0] < position[0]
+          ) {
+            if (found == null || board[i][0] > found) {
+              // find greatest row above our row
+              found = board[i][0]
+            }
+          }
+        }
+        if (found != null && found < position[0] - 1) {
+          board[color][0] = found + 1
+        } else if (found == null) {
+          console.log("found nothing 0")
+        }
+        break
+      case this.directions.DOWN:
+        for (let i = 0; i < this.colors.length; i++) {
+          if (board[i] == null) continue
+          if (
+            i != color &&
+            board[i][1] == position[1] &&
+            board[i][0] > position[0]
+          ) {
+            if (found == null || board[i][0] < found) {
+              // find smallest row below our row
+              found = board[i][0]
+            }
+          }
+        }
+        if (found != null && found > position[0] + 1) {
+          board[color][0] = found - 1
+        } else if (found == null) {
+          console.log("found nothing 1")
+        }
+        break
+      case this.directions.LEFT:
+        for (let i = 0; i < this.colors.length; i++) {
+          if (board[i] == null) continue
+          if (
+            i != color &&
+            board[i][0] == position[0] &&
+            board[i][1] < position[1]
+          ) {
+            if (found == null || board[i][1] > found) {
+              // find greatest col before ours
+              found = board[i][1]
+            }
+          }
+        }
+        if (found != null && found < position[1] - 1) {
+          board[color][1] = found + 1
+        } else if (found == null) {
+          console.log("found nothing 2")
+        }
+        break
+      case this.directions.RIGHT:
+        for (let i = 0; i < this.colors.length; i++) {
+          if (board[i] == null) continue
+          if (
+            i != color &&
+            board[i][0] == position[0] &&
+            board[i][1] > position[1]
+          ) {
+            if (found == null || board[i][1] < found) {
+              // find smallest col after ours
+              found = board[i][1]
+            }
+          }
+        }
+        if (found != null && found > position[1] + 1) {
+          board[color][1] = found - 1
+        } else if (found == null) {
+          console.log("found nothing 3")
+        }
+        break
+    }
+  }
+
+  static getMoves(board, color) {
+    moves = []
+    position = board[color]
+    if (position == null) {
+      return []
+    }
+    let addup = true
+    let addleft = true
+    let addright = true
+    let adddown = true
+    for (let i = 0; i < this.colors.length; i++) {
+      if (board[i] == null) continue
+      if (
+        addup &&
+        i != color &&
+        board[i][1] == position[1] &&
+        board[i][0] < position[0] - 1
+      ) {
+        moves.push(this.directions.UP)
+        addup = false
+      }
+      if (
+        adddown &&
+        i != color &&
+        board[i][1] == position[1] &&
+        board[i][0] > position[0] + 1
+      ) {
+        moves.push(this.directions.DOWN)
+        adddown = false
+      }
+      if (
+        addleft &&
+        i != color &&
+        board[i][0] == position[0] &&
+        board[i][1] < position[1] - 1
+      ) {
+        moves.push(this.directions.LEFT)
+        addleft = false
+      }
+      if (
+        addright &&
+        i != color &&
+        board[i][0] == position[0] &&
+        board[i][1] > position[1] + 1
+      ) {
+        moves.push(this.directions.RIGHT)
+        addright = false
+      }
+    }
+
+    return moves
+  }
+
+  static canMove(board, color, direction) {
+    const position = board[color]
+    if (position == null) {
+      console.log("position is null 0")
+    }
+
+    // some optimizations, we can immediately disregard these moves
+    if (position[0] <= 1 && direction == this.directions.UP) return false
+    if (position[0] >= 3 && direction == this.directions.DOWN) return false
+    if (position[1] <= 1 && direction == this.directions.LEFT) return false
+    if (position[1] >= 3 && direction == this.directions.RIGHT) return false
+    for (let i = 0; i < this.colors.length; i++) {
+      if (board[i] == null) continue
+      if (i != color && this.canBlockWithAMove(board, color, i, direction))
+        return true
+    }
+    return false
+  }
+
+  // does the blocker block the mover in the direction?
+  // note that this will also check if there is actually a move. if the
+  // blocker is right next to the mover, and it blocks it, but there
+  // is no move, then the return value will be false.
+  static canBlockWithAMove(board, moverColor, blockerColor, direction) {
+    const position = board[moverColor]
+
+    switch (direction) {
+      case this.directions.UP:
+        if (
+          board[blockerColor][1] == position[1] &&
+          board[blockerColor][0] < position[0] - 1
+        )
+          return true
+        break
+      case this.directions.DOWN:
+        if (
+          board[blockerColor][1] == position[1] &&
+          board[blockerColor][0] > position[0] + 1
+        )
+          return true
+        break
+      case this.directions.LEFT:
+        if (
+          board[blockerColor][0] == position[0] &&
+          board[blockerColor][1] < position[1] - 1
+        )
+          return true
+        break
+      case this.directions.RIGHT:
+        if (
+          board[blockerColor][0] == position[0] &&
+          board[blockerColor][1] > position[1] + 1
+        )
+          return true
+        break
+    }
+    return false
+  }
+
+  static isSolved(board) {
+    return board[3][0] == 2 && board[3][1] == 2
+  }
+}
+
 ;(function () {
   const board = [
     [0, 0, 0, 0, 0],
@@ -12,10 +303,18 @@
   let youDidIt = false
   let level = 0
 
-  const colors = ["white", "orange", "green", "yellow", "red", "purple", "blue"]
+  const uiColors = [
+    "white",
+    "orange",
+    "green",
+    "yellow",
+    "red",
+    "purple",
+    "blue",
+  ]
 
-  // boards gives the position of each of the above colors on the board.
-  // the entries start with orange, while is in the colors array for convenience.
+  // boards gives the position of each of the above uiColors on the board.
+  // the entries start with orange, while is in the uiColors array for convenience.
   // for example,
   //  [[0, 4], [1, 2], [3, 3], [4, 4], [2, 1]], means:
   //  	orange is in position [0, 4]
@@ -86,6 +385,8 @@
       }
 
       cur = boards[level]
+      console.log(LunarLockoutSolver.solveIterativeDescent(cur, [4, 5, 6, 9]))
+
       for (let i = 0; i < 6; i++) {
         if (cur[i] != null) {
           board[cur[i][0]][cur[i][1]] = i + 1
@@ -107,7 +408,7 @@
       for (let j = 0; j < 5; j++) {
         const cell = document.createElement("div")
         cell.id = i + "-" + j
-        cell.style.background = colors[board[i][j]]
+        cell.style.background = uiColors[board[i][j]]
         cell.onclick = function () {
           moveSelectedSquareTo(i, j)
           calcShouldMoveColor()
@@ -142,13 +443,13 @@
         board[selected[0]][selected[1]] = 0
         document.getElementById(
           selected[0] + "-" + selected[1]
-        ).style.background = colors[0]
+        ).style.background = uiColors[0]
         document
           .getElementById(selected[0] + "-" + selected[1])
           .classList.remove("selected-for-move")
         board[next[0]][next[1]] = color
         document.getElementById(next[0] + "-" + next[1]).style.background =
-          colors[color]
+          uiColors[color]
         moveSelectedSquareTo(next[0], next[1])
         detectSuccess()
         syncUndoVisibility()
@@ -170,10 +471,10 @@
           if (board[i][j] == color) {
             board[i][j] = 0
             board[lastPos[0]][lastPos[1]] = color
-            document.getElementById(i + "-" + j).style.background = colors[0]
+            document.getElementById(i + "-" + j).style.background = uiColors[0]
             document.getElementById(
               lastPos[0] + "-" + lastPos[1]
-            ).style.background = colors[color]
+            ).style.background = uiColors[color]
             break
           }
         }
