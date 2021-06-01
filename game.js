@@ -383,7 +383,7 @@ class BoardPhraseEncoding {
     "those", "what", "your"]
 
   static encode(board) {
-    let num = 0;
+    let num = 0
     for (let i = 0; i < board.length; i++) {
       num = num * 26
       if (board[i] != null) {
@@ -410,26 +410,26 @@ class BoardPhraseEncoding {
   }
 
   static decode(phrase) {
-    let words = phrase.split(" ");
-    let d0 = this.adjectives.indexOf(words[0]);
-    let d1 = this.adjectives.indexOf(words[1]);
-    let d2 = this.nouns.indexOf(words[2]);
+    const words = phrase.split(" ")
+    const d0 = this.adjectives.indexOf(words[0])
+    const d1 = this.adjectives.indexOf(words[1])
+    const d2 = this.nouns.indexOf(words[2])
 
-    let num = d2+d1*1312 + d0*1312*1312;
+    let num = d2 + d1 * 1312 + d0 * 1312 * 1312
 
-    let board = [];
+    const board = []
 
-    while(num > 0) {
-      let d = num % 26;
-      num = Math.floor(num/26);
-      if(d == 0) {
+    while (num > 0) {
+      const d = num % 26
+      num = Math.floor(num / 26)
+      if (d == 0) {
         board.push(null)
       } else {
-        board.push([Math.floor((d-1)/5), (d -1) %5]);
+        board.push([Math.floor((d - 1) / 5), (d - 1) % 5])
       }
     }
 
-    return board.reverse();
+    return board.reverse()
   }
 }
 
@@ -506,7 +506,7 @@ class LunarLockoutSolver {
             } else {
               const solution = this.solve(boardCopy, steps - 1)
               if (solution != null) {
-                solution.push([this.colors[color], direction])
+                solution.unshift([this.colors[color], direction])
                 return solution
               }
             }
@@ -826,16 +826,22 @@ class LunarLockoutSolver {
           [3, 4, 5, 6, 7]
         )
         console.log(s)
-        document.getElementById("level").innerHTML=
-          "Level: Random (solution is " + s.length + " steps). <br> To load this board again, add the foloowing to the url: random="+BoardPhraseEncoding.encode(cur);
-      } else if(random === "false") {
+        document.getElementById("level").innerHTML =
+          "Level: Random (solution is " +
+          s.length +
+          " steps). <br> To load this board again, add the following to the url: random=" +
+          BoardPhraseEncoding.encode(cur)
+      } else if (random === "false") {
         cur = boards[level]
         document.getElementById("level").innerText = "Level: " + (level + 1)
       } else {
-        cur = BoardPhraseEncoding.decode(random);
-        s = LunarLockoutSolver.solveIterativeDescent(cur, [4,5,6,7,8]);
+        cur = BoardPhraseEncoding.decode(random)
+        s = LunarLockoutSolver.solveIterativeDescent(cur, [4, 5, 6, 7, 8])
         document.getElementById("level").innerHTML =
-          "Level: Random (solution is " + s.length + " steps).<br> To load this board again, add the foloowing to the url: random="+BoardPhraseEncoding.encode(cur);
+          "Level: Random (solution is " +
+          s.length +
+          " steps).<br> To load this board again, add the following to the url: random=" +
+          BoardPhraseEncoding.encode(cur)
       }
 
       for (let i = 0; i < 6; i++) {

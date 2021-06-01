@@ -8,8 +8,6 @@ class LunarLockoutSolver {
 
 
 
-  LunarLockoutSolver.yoman();
-  
   // boards gives the position of each of the above colors on the board.
   // for example,
   //  [[0, 4], [1, 2], [3, 3], [4, 4], [2, 1]], means:
