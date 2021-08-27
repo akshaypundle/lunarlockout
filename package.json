@@ -29,6 +29,10 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-require": "0.0.1",
+    "grunt": "^1.4.1",
+    "grunt-contrib-jshint": "^3.0.0",
+    "grunt-contrib-nodeunit": "^3.0.0",
+    "grunt-contrib-uglify": "^5.0.1",
     "or": "^0.2.0",
     "prettier": "^2.3.0",
     "yarn": "^1.22.10"
