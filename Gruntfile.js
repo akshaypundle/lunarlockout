@@ -32,6 +32,6 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['uglify', 'prettier']);
-  grunt.registerTask('push_s3', ['uglify', 'shell']);
+  grunt.registerTask('push_s3', ['prettier', 'shell']);
 
 };
