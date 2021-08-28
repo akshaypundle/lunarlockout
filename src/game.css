@@ -61,6 +61,14 @@ html *
   width: 535px;
   text-align: center;
 }
+#center-div {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  background: red;
+  margin: auto;
+
+}
 
 /* for phones */
 @media screen and (max-width: 481px) {

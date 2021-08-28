@@ -891,6 +891,13 @@ class LunarLockoutSolver {
         const cell = document.createElement("div");
         cell.id = i + "-" + j;
         cell.style.background = uiColors[board[i][j]];
+        if (i == 2 && j == 2) {
+          centerDiv = document.createElement("div");
+          centerDiv.id = "center-div";
+          cell.style.setProperty("display", "inline-flex");
+          cell.appendChild(centerDiv);
+        }
+
         cell.onclick = function () {
           moveSelectedSquareTo(i, j);
           calcShouldMoveColor();
@@ -1075,16 +1082,6 @@ class LunarLockoutSolver {
     level = urlParams.get("level") || "0";
     random = urlParams.get("random") || "false";
     level = Math.min(Math.max(0, parseInt(level) - 1), boards.length - 1);
-
-    $(".trigger_popup_fricc").click(function(){
-       $('.hover_bkgr_fricc').show();
-    });
-    $('.hover_bkgr_fricc').click(function(){
-        $('.hover_bkgr_fricc').hide();
-    });
-    $('.popupCloseButton').click(function(){
-        $('.hover_bkgr_fricc').hide();
-    });
 
     startGame();
   };

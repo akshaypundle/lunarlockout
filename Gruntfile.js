@@ -20,7 +20,10 @@ module.exports = function(grunt) {
     },
     shell: {
       push_s3: {
-        command: "./push_s3.sh"
+        command: "s3cmd put src/game.css src/game.js src/game.html s3://moonji.net"
+      },
+      push_min_s3: {
+        command: "s3cmd put src/game.css src/game.html s3://moonji.net && s3cmd put dest/game.min.js s3://moonji.net/game.js"
       }
     }
   });
@@ -32,6 +35,7 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['uglify', 'prettier']);
-  grunt.registerTask('push_s3', ['prettier', 'shell']);
+  grunt.registerTask('push_s3', ['prettier', 'shell:push_s3']);
+  grunt.registerTask('push_min_s3', ['uglify', 'shell:push_min_s3']);
 
 };
