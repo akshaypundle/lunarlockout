@@ -857,6 +857,28 @@ class LunarLockoutSolver {
     }
   }
 
+  function createHammer(elem) {
+    hammer = new Hammer(elem);
+    hammer.get("pinch").set({ enable: false });
+    hammer.get("rotate").set({ enable: false });
+    hammer.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
+    return hammer;
+  }
+
+  function moveSwipeEvent(ev) {
+    if (shouldMoveColor) {
+      if (ev.type === "swipeleft") {
+        move([0, -1]);
+      } else if (ev.type === "swiperight") {
+        move([0, 1]);
+      } else if (ev.type === "swipeup") {
+        move([-1, 0]);
+      } else if (ev.type === "swipedown") {
+        move([1, 0]);
+      }
+    }
+  }
+
   function makeRows(rows, cols) {
     const container = document.getElementById("container");
     container.style.setProperty("--grid-rows", rows);
@@ -870,6 +892,17 @@ class LunarLockoutSolver {
           moveSelectedSquareTo(i, j);
           calcShouldMoveColor();
         };
+
+        // listen to events...
+        createHammer(cell).on(
+          "swipeleft swiperight swipeup swipedown",
+          function (ev) {
+            moveSelectedSquareTo(i, j);
+            calcShouldMoveColor();
+            moveSwipeEvent(ev);
+          }
+        );
+
         container.appendChild(cell).className = "grid-item";
       }
     }
@@ -1036,6 +1069,7 @@ class LunarLockoutSolver {
     level = urlParams.get("level") || "0";
     random = urlParams.get("random") || "false";
     level = Math.min(Math.max(0, parseInt(level) - 1), boards.length - 1);
+
     startGame();
   };
 })();
