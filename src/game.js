@@ -830,19 +830,22 @@ class LunarLockoutSolver {
         document.getElementById("level").innerHTML =
           "Level: Random (solution is " +
           s.length +
-          " steps). <br> To load this board again, add the following to the url: random=" +
-          BoardPhraseEncoding.encode(cur);
+          " steps). <a href=?random=" +
+          escape(BoardPhraseEncoding.encode(cur)) +
+          ">Link to board</a>";
       } else if (random === "false") {
         cur = boards[level];
         document.getElementById("level").innerText = "Level: " + (level + 1);
       } else {
         cur = BoardPhraseEncoding.decode(random);
         s = LunarLockoutSolver.solveIterativeDescent(cur, [4, 5, 6, 7, 8]);
+        console.log(s);
         document.getElementById("level").innerHTML =
           "Level: Random (solution is " +
           s.length +
-          " steps).<br> To load this board again, add the following to the url: random=" +
-          BoardPhraseEncoding.encode(cur);
+          " steps). <a href=?random=" +
+          escape(BoardPhraseEncoding.encode(cur)) +
+          ">Link to board</a>";
       }
 
       for (let i = 0; i < 6; i++) {
@@ -1055,6 +1058,9 @@ class LunarLockoutSolver {
   window.onload = function () {
     document.getElementById("next").addEventListener("click", function () {
       level = level + 1;
+      if (urlParams.get("random")) {
+        window.location.href = "?random=true";
+      }
       startGame();
     });
     document.getElementById("restart").addEventListener("click", function () {
@@ -1069,6 +1075,16 @@ class LunarLockoutSolver {
     level = urlParams.get("level") || "0";
     random = urlParams.get("random") || "false";
     level = Math.min(Math.max(0, parseInt(level) - 1), boards.length - 1);
+
+    $(".trigger_popup_fricc").click(function(){
+       $('.hover_bkgr_fricc').show();
+    });
+    $('.hover_bkgr_fricc').click(function(){
+        $('.hover_bkgr_fricc').hide();
+    });
+    $('.popupCloseButton').click(function(){
+        $('.hover_bkgr_fricc').hide();
+    });
 
     startGame();
   };

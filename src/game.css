@@ -3,24 +3,28 @@
   --grid-rows: 1;
 }
 
+html *
+{
+   font-family: Arial !important;
+}
 #container {
   display: grid;
+  padding: 1em;
   grid-gap: 1em;
   grid-template-rows: repeat(var(--grid-rows), 1fr);
   grid-template-columns: repeat(var(--grid-cols), 1fr);
   width: 500px;
   height: 500px;
   border: 1px solid #ddd;
-  padding: 1em;
   background: #f1f1f1;
-}
+}  
 
 #undo-div {
   padding-top: 1em;
 }
 
 .grid-item {
-  padding: 1em;
+  /* padding: 1em; */
   border: 1px solid #ddd;
 }
 
@@ -45,4 +49,32 @@
 #game-over {
   font-size: larger;
   color: red;
+}
+
+#heading {
+  width: 535px;
+  font-size:30px;
+  text-align: center;
+}
+
+#subheading {
+  width: 535px;
+  text-align: center;
+}
+
+/* for phones */
+@media screen and (max-width: 481px) {
+  #container {
+    width: 350px;
+    height: 350px;
+    grid-gap: 1ch;
+    padding: 1ch;
+  }
+  #heading {
+    width: 350px;
+  }
+
+  #subheading {
+    width: 350px;
+  }
 }
