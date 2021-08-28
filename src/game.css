@@ -65,13 +65,16 @@ html *
 #random-board {
   font-size: larger;
 }
-#center-div {
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  background: red;
-  margin: auto;
 
+@media (min-width: 482px) {
+
+  #center-div {
+    width: 1ch;
+    height: 1ch;
+    border-radius: 0.5ch;
+    background: red;
+    margin: auto;
+  }
 }
 
 /* for phones */
@@ -88,5 +91,13 @@ html *
 
   #subheading {
     width: 350px;
+  }
+
+  #center-div {
+    width: 1ch;
+    height: 1ch;
+    border-radius: 0.5ch;
+    background: red;
+    margin: auto;
   }
 }
