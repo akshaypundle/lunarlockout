@@ -61,6 +61,10 @@ html *
   width: 535px;
   text-align: center;
 }
+
+#random-board {
+  font-size: larger;
+}
 #center-div {
   width: 30px;
   height: 30px;

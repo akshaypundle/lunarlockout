@@ -39,5 +39,7 @@
     "prettier": "^2.3.0",
     "yarn": "^1.22.10"
   },
-  "dependencies": {}
+  "dependencies": {
+    "micromodal": "^0.4.6"
+  }
 }

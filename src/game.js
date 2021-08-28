@@ -1061,6 +1061,11 @@ class LunarLockoutSolver {
       }
     }
   });
+  document.onload = function() {
+    MicroModal.init();
+	MicroModal.show('modal-1');
+
+  }
 
   window.onload = function () {
     document.getElementById("next").addEventListener("click", function () {
