@@ -1062,6 +1062,10 @@ class LunarLockoutSolver {
     }
   });
 
+  function showHelp() {
+	helpModal.show();
+	}
+
   window.onload = function () {
     document.getElementById("next").addEventListener("click", function () {
       level = level + 1;
@@ -1076,6 +1080,9 @@ class LunarLockoutSolver {
     document.getElementById("undo").addEventListener("click", function () {
       doUndo();
     });
+    document.getElementById("help").addEventListener("click", function () {
+      showHelp();
+    });
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -1089,7 +1096,7 @@ class LunarLockoutSolver {
       "You can move any colored square left, right, up or down by swiping or with arrow keys." +
       "<p>When moving in any direction, the square continues to move until it is stopped by another square." +
       "If there is no square to stop it, then it <b>slides off the end and the game is over</b>.";
-    picoModal({
+    helpModal = picoModal({
       content: help,
       closeButton: false,
       overlayStyles: {
@@ -1098,16 +1105,16 @@ class LunarLockoutSolver {
       },
       modalId: "help-modal",
 	  modalStyles: {
-		left: "40%",
+		left: "45%",
     	position: "fixed",
-    	width: "auto",
+    	width: "80%",
     	overflow: "auto",
     	"background-color": "white",
-    	padding: "20px",
+    	padding: "10px",
     	"border-radius": "5px"
       },
 
-    }).show();
+    });
 
     startGame();
   };
