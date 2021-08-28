@@ -62,8 +62,18 @@ html *
   text-align: center;
 }
 
+#help {
+  float:right;
+}
+
 #random-board {
   font-size: larger;
+}
+
+#help-modal {
+  color: #2218ab;
+  border-radius: 3px;
+  left: 40%;
 }
 
 @media (min-width: 482px) {

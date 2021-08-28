@@ -1061,11 +1061,6 @@ class LunarLockoutSolver {
       }
     }
   });
-  document.onload = function() {
-    MicroModal.init();
-	MicroModal.show('modal-1');
-
-  }
 
   window.onload = function () {
     document.getElementById("next").addEventListener("click", function () {
@@ -1087,6 +1082,32 @@ class LunarLockoutSolver {
     level = urlParams.get("level") || "0";
     random = urlParams.get("random") || "false";
     level = Math.min(Math.max(0, parseInt(level) - 1), boards.length - 1);
+
+    help =
+      "<h1>How to play</h1>" +
+      "<p>The objective of the game is to move the red square into the center. " +
+      "You can move any colored square left, right, up or down by swiping or with arrow keys." +
+      "<p>When moving in any direction, the square continues to move until it is stopped by another square." +
+      "If there is no square to stop it, then it <b>slides off the end and the game is over</b>.";
+    picoModal({
+      content: help,
+      closeButton: false,
+      overlayStyles: {
+        backgroundColor: "#a7a7a7",
+        opacity: 0.75
+      },
+      modalId: "help-modal",
+	  modalStyles: {
+		left: "40%",
+    	position: "fixed",
+    	width: "auto",
+    	overflow: "auto",
+    	"background-color": "white",
+    	padding: "20px",
+    	"border-radius": "5px"
+      },
+
+    }).show();
 
     startGame();
   };
