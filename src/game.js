@@ -1063,8 +1063,8 @@ class LunarLockoutSolver {
   });
 
   function showHelp() {
-	helpModal.show();
-	}
+    helpModal.show();
+  }
 
   window.onload = function () {
     document.getElementById("next").addEventListener("click", function () {
@@ -1104,16 +1104,15 @@ class LunarLockoutSolver {
         opacity: 0.75
       },
       modalId: "help-modal",
-	  modalStyles: {
-		left: "45%",
-    	position: "fixed",
-    	width: "80%",
-    	overflow: "auto",
-    	"background-color": "white",
-    	padding: "10px",
-    	"border-radius": "5px"
-      },
-
+      modalStyles: {
+        left: "45%",
+        position: "fixed",
+        width: "80%",
+        overflow: "auto",
+        "background-color": "white",
+        padding: "10px",
+        "border-radius": "5px"
+      }
     });
 
     startGame();
