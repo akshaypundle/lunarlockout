@@ -738,6 +738,7 @@ class LunarLockoutSolver {
   let youDidIt = false;
   let level = 0;
   let random = false;
+  let mystorage = null;
 
   const uiColors = [
     "white",
@@ -1000,6 +1001,7 @@ class LunarLockoutSolver {
     youDidIt = true;
     document.getElementById("you-did-it").style.display = "block";
     document.getElementById("game-over").style.display = "none";
+    mystorage.setItem("l" + level, "true");
   }
 
   function moveSelectedSquareTo(i, j) {
@@ -1089,7 +1091,25 @@ class LunarLockoutSolver {
     level = urlParams.get("level") || "0";
     random = urlParams.get("random") || "false";
     level = Math.min(Math.max(0, parseInt(level) - 1), boards.length - 1);
-
+    mystorage = window.localStorage;
+    if (random == "false") {
+      for (let i = 0; i <= 40; i++) {
+        if (mystorage.getItem("l" + i) != "true") {
+          if (i > 0 && i != level) {
+            picoModal({
+              content:
+                "Click <a href = ?level=" +
+                (i + 1) +
+                ">here</a> to go to the last uncompleted level (" +
+                (i + 1) +
+                ")",
+              closeButton: false
+            }).show();
+          }
+          break;
+        }
+      }
+    }
     help =
       "<h1>How to play</h1>" +
       "<p>The objective of the game is to move the red square into the center. " +
