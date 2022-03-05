@@ -1,2 +1,2 @@
 # lunarlockout
-the classic lunar lockout game
+Play this game at: [https://moonji.net](moonji.net)
