@@ -1,2 +1,2 @@
 # lunarlockout
-Play this game at: [https://moonji.net](moonji.net)
+Play this game at: [moonji.net](https://www.moonji.net)
